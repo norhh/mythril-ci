@@ -1,0 +1,36 @@
+# Dockerfile for Docker image of Mythril eco-system.
+
+# From the latest long-term support version of Ubuntu.
+FROM ubuntu:rolling
+
+# Install generic build dependencies.
+RUN apt-get update
+RUN apt-get install -y apt-utils build-essential curl git libssl-dev pandoc python3.6 python3-pip software-properties-common
+
+# Install Ethereum, NodeJS, Solidity.
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN add-apt-repository ppa:ethereum/ethereum
+RUN apt-get update
+RUN apt-get install -y ethereum nodejs solc
+
+# Install Truffle.
+RUN npm install -g truffle
+
+# Install Python dependencies of Mythril.
+RUN pip3 install --upgrade pip
+RUN pip3 install BTrees coverage eth_abi eth-account eth-hash eth-keyfile eth-keys eth-rlp eth-tester eth-utils ethereum plyvel py-flags py-solc requests setuptools z3-solver ZODB
+
+# Additional configuration.
+WORKDIR home
+RUN rm /usr/bin/python
+RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN ln -s /usr/bin/pip3 /usr/bin/pip
+
+# Copying-in auxiliary assets.
+COPY ethereum.password install-mythril-tools.sh ./
+
+# Create new Ethereum account.
+RUN geth account new --password ./ethereum.password
+
+# Run geth in background for ten minutes.
+RUN timeout --preserve-status 10m geth --syncmode full
