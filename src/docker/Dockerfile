@@ -5,13 +5,16 @@ FROM ubuntu:rolling
 
 # Install generic build dependencies.
 RUN apt-get update
-RUN apt-get install -y apt-utils build-essential curl git libssl-dev pandoc python3.6 python3-pip software-properties-common
+RUN apt-get install -y apt-utils build-essential curl git libssl-dev pandoc python3.6 python3-pip software-properties-common wget
 
-# Install Ethereum, NodeJS, Solidity.
+# Install Ethereum, Heroku CLI, MongoDB, NodeJS, Solidity.
+RUN wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
+RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.6.list
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN add-apt-repository ppa:ethereum/ethereum
 RUN apt-get update
-RUN apt-get install -y ethereum nodejs solc
+RUN apt-get install -y ethereum mongodb-org nodejs solc
 
 # Install Truffle.
 RUN npm install -g truffle
