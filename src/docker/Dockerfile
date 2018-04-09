@@ -21,7 +21,7 @@ RUN npm install -g truffle
 
 # Install Python dependencies of Mythril.
 RUN pip3 install --upgrade pip
-RUN pip3 install BTrees coverage eth_abi eth-account eth-hash eth-keyfile eth-keys eth-rlp eth-tester eth-utils ethereum plyvel py-flags py-solc requests setuptools z3-solver ZODB
+RUN pip3 install BTrees coverage eth_abi eth-account eth-hash eth-keyfile eth-keys eth-rlp eth-tester eth-utils ethereum plyvel py-flags py-solc requests setuptools twine z3-solver ZODB
 
 # Additional configuration.
 WORKDIR home
