@@ -14,6 +14,17 @@ do
   if [ "$toolname" == "mythril" ]
   then
     git clone https://github.com/ConsenSys/mythril.git
-    cd mythril && python3 setup.py install && cd ..
+    # TODO: remove the "git checkout" part of this command when v0.17 fixes an integration issue
+    # TODO: similarly, there seems to be a bug when requiring from rlp, changing the version solves the issue
+    # (check https://github.com/ethereum/pyethereum/issues/868)
+    cd mythril && git checkout tags/v0.15.9 && python3 setup.py install && pip install rlp==0.6.0 && cd ..
+  fi
+
+  if [ "$toolname" == "mythril-api" ]
+  then
+    # TODO: figure out a way of getting clone access, including the API statically in the image for now in a mock location
+    # git clone https://github.com/ConsenSys/mythril-api.git
+    cp -R mythril-api-mock-source mythril-api
+    cd mythril-api && npm i && cd ..
   fi
 done

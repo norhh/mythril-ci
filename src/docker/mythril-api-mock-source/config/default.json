@@ -1,0 +1,8 @@
+{
+  "PORT": 3100,
+  "VERBOSE_LOGGING": true,
+  "QUEUE_NAME": "mythril",
+  "RABBITMQ_URL": "amqp://localhost",
+  "MONGODB_URL": "mongodb://127.0.0.1:27017/mythrill",
+  "MYTH_COMMAND": "myth"
+}
