@@ -34,6 +34,7 @@ RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-instal
  && pip3 install tox-pyenv 
 
 # Install Pythons
+RUN pyenv install 3.4.8
 RUN pyenv install 3.5.5
 RUN pyenv install 3.6.5
 RUN cd /home \
