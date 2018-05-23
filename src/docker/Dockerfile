@@ -6,6 +6,7 @@ FROM ubuntu:rolling
 # Set noninteractive so that there are no interactive prompts during instalation.
 #   Using ARG ensures the environment variable is only present for build and not for execution.
 ARG DEBIAN_FRONTEND=noninteractive
+ARG NODE_VERSION="node_8.x"
 
 # Install generic build dependencies and add repositories
 RUN apt-get update \
@@ -19,7 +20,6 @@ RUN apt-get update \
  #  Nodesource release key and repository
  && apt-key adv --keyserver hkps://keyserver.ubuntu.com --recv 9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280 \
  && DISTRO="$(lsb_release -s -c)" \
- && NODE_VERSION="node_8.x" \
  && echo "deb https://deb.nodesource.com/$NODE_VERSION $DISTRO main" | tee /etc/apt/sources.list.d/nodesource.list \
  && echo "deb-src https://deb.nodesource.com/$NODE_VERSION $DISTRO main" | tee -a /etc/apt/sources.list.d/nodesource.list \
  #  Heroku release key and repository
@@ -38,9 +38,10 @@ RUN apt-get update \
       git \
       pandoc \
       heroku \
-      libssl-dev \
       python3-pip \
       python3-dev \
+      libssl1.0-dev \
+      zlib1g-dev \
       libbz2-dev \
       libsqlite3-dev \
       libreadline-dev \
