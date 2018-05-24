@@ -2,7 +2,7 @@
 # test script to run CI directly from the generated Docker image (CircleCI should execute these commands separately
 # as specified in other projects' .circleci/config.yml)
 
-cd /home && ./install-mythril-tools.sh mythril mythril-api
+cd /home && ./install-mythril-tools.sh laser-ethereum mythril mythril-api
 service rabbitmq-server start
 mkdir -p /home/mongodb && mongod --dbpath=/home/mongodb > /dev/null &
 export PORT=3010

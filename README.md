@@ -32,6 +32,6 @@
   container with it, by executing:
 
   ```sh
-  docker run -it mythril:0.0.1 bash
+  docker run -it mythril:0.0.2 bash
   $ ./run-integration-tests.sh
   ```

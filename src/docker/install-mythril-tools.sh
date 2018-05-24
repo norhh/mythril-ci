@@ -14,10 +14,9 @@ do
   if [ "$toolname" == "mythril" ]
   then
     git clone https://github.com/ConsenSys/mythril.git
-    # TODO: remove the "git checkout" part of this command when v0.17 fixes an integration issue
     # TODO: similarly, there seems to be a bug when requiring from rlp, changing the version solves the issue
     # (check https://github.com/ethereum/pyethereum/issues/868)
-    cd mythril && git checkout tags/v0.15.9 && python3 setup.py install && pip install rlp==0.6.0 && cd ..
+    cd mythril && python3 setup.py install && pip install rlp==0.6.0 && cd ..
   fi
 
   if [ "$toolname" == "mythril-api" ]
