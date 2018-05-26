@@ -1,7 +1,6 @@
 import request from 'supertest';
 import httpStatus from 'http-status';
 import submissionWithIssues from './submissionWithIssues';
-import expectedIssues from './issues';
 
 const serverRequest = request(`http://127.0.0.1:${process.env.PORT}`);
 
@@ -31,7 +30,7 @@ async function waitForStatusUpdate(uuid, currentStatus, nextStatus) {
   }
 }
 
-describe('/mythril/v1//analysis', () => {
+describe('/mythril/v1/analysis', () => {
   describe('Submit', () => {
     it('no issues', async () => {
       let res = await serverRequest
@@ -111,7 +110,7 @@ describe('/mythril/v1//analysis', () => {
         .get(`/mythril/v1/analysis/${res.body.uuid}/issues`)
         .expect(httpStatus.OK);
 
-      expect(res.body).toEqual(expectedIssues);
+      expect(res.body).toMatchSnapshot();
     });
   });
 });
