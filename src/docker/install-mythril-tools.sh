@@ -21,9 +21,7 @@ do
 
   if [ "$toolname" == "mythril-api" ]
   then
-    # TODO: figure out a way of getting clone access, including the API statically in the image for now in a mock location
-    # git clone https://github.com/ConsenSys/mythril-api.git
-    cp -R mythril-api-mock-source mythril-api
+    git clone https://$GIT_USERNAME:$GIT_TOKEN@github.com/ConsenSys/mythril-api.git
     cd mythril-api && npm i && cd ..
   fi
 done
