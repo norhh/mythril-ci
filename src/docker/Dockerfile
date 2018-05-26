@@ -14,7 +14,9 @@ RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mo
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN add-apt-repository ppa:ethereum/ethereum
 RUN apt-get update
-RUN apt-get install -y ethereum mongodb-org nodejs solc
+
+# DEBIAN_FRONTEND=noninteractive fixes an issue where tzdata blocks the image building
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ethereum mongodb-org nodejs solc
 
 # Install Truffle.
 RUN npm install -g truffle
@@ -22,6 +24,11 @@ RUN npm install -g truffle
 # Install Python dependencies of Mythril.
 RUN pip3 install --upgrade pip
 RUN pip3 install BTrees coverage eth_abi eth-account eth-hash eth-keyfile eth-keys eth-rlp eth-tester eth-utils ethereum plyvel py-flags py-solc requests setuptools twine z3-solver ZODB
+
+# Install RabbitMQ and psmisc, needed to make sure killall can be executed after running integration tests
+RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add - &&\
+  apt-get update &&\
+  apt-get install -y rabbitmq-server psmisc
 
 # Additional configuration.
 WORKDIR home
@@ -31,6 +38,21 @@ RUN ln -s /usr/bin/pip3 /usr/bin/pip
 
 # Copying-in auxiliary assets.
 COPY ethereum.password install-mythril-tools.sh ./
+
+# Integration tests - make sure to cache dependency installs
+RUN mkdir integration-tests
+COPY ./integration-tests/package.json ./integration-tests/package-lock.json ./integration-tests/
+RUN cd integration-tests && npm i && cd ..
+# ... and copy all files after dependencies were cached
+COPY integration-tests ./integration-tests/
+
+# TODO: remove these comments after getting clone access to the mythril-api repo
+# we statically copy mythril-api-mock-source, and then install it to
+# mythril-api for whichever client executes "./install-mythril-tools.sh mythril-api"
+COPY mythril-api-mock-source ./mythril-api-mock-source/
+
+# Helper command to run integration tests from within this generated image
+COPY run-integration-tests.sh ./
 
 # Create new Ethereum account.
 RUN geth account new --password ./ethereum.password

@@ -1,0 +1,40 @@
+{
+  "name": "integration-tests",
+  "version": "1.0.0",
+  "description": "Integration tests for the Mythril ecosystem",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "jest -i"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConsenSys/mythril-ci.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ConsenSys/mythril-ci/issues"
+  },
+  "homepage": "https://github.com/ConsenSys/mythril-ci#readme",
+  "devDependencies": {
+    "bluebird": "^3.5.1",
+    "babel-eslint": "^7.1.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "eslint": "^4.19.1",
+    "eslint-config-topcoder": "^2.0.0",
+    "eslint-plugin-babel": "^4.0.0",
+    "http-status": "^1.1.0",
+    "jest": "^22.4.3",
+    "supertest": "^3.1.0"
+  },
+  "dependencies": {},
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/setup.js"
+    ]
+  }
+}
