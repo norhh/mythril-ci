@@ -46,11 +46,6 @@ RUN cd integration-tests && npm i && cd ..
 # ... and copy all files after dependencies were cached
 COPY integration-tests ./integration-tests/
 
-# TODO: remove these comments after getting clone access to the mythril-api repo
-# we statically copy mythril-api-mock-source, and then install it to
-# mythril-api for whichever client executes "./install-mythril-tools.sh mythril-api"
-COPY mythril-api-mock-source ./mythril-api-mock-source/
-
 # Helper command to run integration tests from within this generated image
 COPY run-integration-tests.sh ./
 
