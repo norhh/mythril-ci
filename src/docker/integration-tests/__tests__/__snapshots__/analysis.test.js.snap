@@ -43,6 +43,17 @@ The addition or multiplication may result in a value higher than the maximum rep
     "type": "Warning",
   },
   Object {
+    "address": 648,
+    "debug": "",
+    "description": "Multiple sends exist in one transaction, try to isolate each external call into its own transaction. As external calls can fail accidentally or deliberately.
+Consecutive calls: 
+Call at address: 823
+",
+    "function": "_function_0x2e1a7d4d",
+    "title": "Multiple Calls",
+    "type": "Information",
+  },
+  Object {
     "address": 823,
     "debug": "",
     "description": "The return value of an external call is not checked. Note that execution continue even if the called contract throws.",
