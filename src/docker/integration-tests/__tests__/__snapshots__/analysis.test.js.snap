@@ -3,30 +3,6 @@
 exports[`/mythril/v1/analysis Submit issues 1`] = `
 Array [
   Object {
-    "address": 823,
-    "debug": "",
-    "description": "This contract executes a message call to to another contract. Make sure that the called contract is trusted and does not execute user-supplied code.",
-    "function": "_function_0x2e1a7d4d",
-    "title": "Message call to external contract",
-    "type": "Informational",
-  },
-  Object {
-    "address": 648,
-    "debug": "",
-    "description": "This contract executes a message call to the address of the transaction sender. Generally, it is not recommended to call user-supplied addresses using Solidity's call() construct. Note that attackers might leverage reentrancy attacks to exploit race conditions or manipulate this contract's state.",
-    "function": "_function_0x2e1a7d4d",
-    "title": "Message call to external contract",
-    "type": "Warning",
-  },
-  Object {
-    "address": 728,
-    "debug": "",
-    "description": "The contract account state is changed after an external call. Consider that the called contract could re-enter the function before this state change takes place. This can lead to business logic vulnerabilities.",
-    "function": "_function_0x2e1a7d4d",
-    "title": "State change after external call",
-    "type": "Warning",
-  },
-  Object {
     "address": 499,
     "debug": "callvalue: 0x57f25cd000000000000000000000000000000000000000000000000000000000
 storage_keccac_1461501637330902918203684832716283019655932542975_&
@@ -45,6 +21,14 @@ The addition or multiplication may result in a value higher than the maximum rep
   Object {
     "address": 648,
     "debug": "",
+    "description": "This contract executes a message call to the address of the transaction sender. Generally, it is not recommended to call user-supplied addresses using Solidity's call() construct. Note that attackers might leverage reentrancy attacks to exploit race conditions or manipulate this contract's state.",
+    "function": "_function_0x2e1a7d4d",
+    "title": "Message call to external contract",
+    "type": "Warning",
+  },
+  Object {
+    "address": 648,
+    "debug": "",
     "description": "Multiple sends exist in one transaction, try to isolate each external call into its own transaction. As external calls can fail accidentally or deliberately.
 Consecutive calls: 
 Call at address: 823
@@ -54,7 +38,7 @@ Call at address: 823
     "type": "Information",
   },
   Object {
-    "address": 823,
+    "address": 648,
     "debug": "",
     "description": "The return value of an external call is not checked. Note that execution continue even if the called contract throws.",
     "function": "_function_0x2e1a7d4d",
@@ -62,7 +46,23 @@ Call at address: 823
     "type": "Informational",
   },
   Object {
-    "address": 648,
+    "address": 728,
+    "debug": "",
+    "description": "The contract account state is changed after an external call. Consider that the called contract could re-enter the function before this state change takes place. This can lead to business logic vulnerabilities.",
+    "function": "_function_0x2e1a7d4d",
+    "title": "State change after external call",
+    "type": "Warning",
+  },
+  Object {
+    "address": 823,
+    "debug": "",
+    "description": "This contract executes a message call to to another contract. Make sure that the called contract is trusted and does not execute user-supplied code.",
+    "function": "_function_0x2e1a7d4d",
+    "title": "Message call to external contract",
+    "type": "Informational",
+  },
+  Object {
+    "address": 823,
     "debug": "",
     "description": "The return value of an external call is not checked. Note that execution continue even if the called contract throws.",
     "function": "_function_0x2e1a7d4d",
