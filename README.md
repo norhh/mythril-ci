@@ -9,7 +9,7 @@ name.
 - It contains `install-mythril-tools.sh` script that helps to install latest
   **master** versions of mythril-family tools. Use it like:
   ```sh
-  $ ./install-mythril-tools.sh laser-ethereum mythril mythril-api
+  $ ./install-mythril-tools.sh mythril mythril-api
   ```
   **BEWARE:** To install **mythril-api** this way, you should have proper
   `GIT_USERNAME` and `GIT_TOKEN` environment variables set (as the repo is
