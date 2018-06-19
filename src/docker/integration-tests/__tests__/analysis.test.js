@@ -55,7 +55,7 @@ async function getValidCredential() {
       firstName: 'David',
       lastName: 'Martin',
       email,
-      termsId: '00000000-0000-0000-0000-000000000001',
+      termsId: 'no_terms',
     })
     .expect(httpStatus.OK);
   expect(res.body).toHaveProperty('token');
@@ -98,7 +98,7 @@ describe('/mythril/v1/auth', () => {
           firstName: 'David',
           lastName: 'Martin',
           email: 'invalid',
-          termsId: '00000000-0000-0000-0000-000000000001',
+          termsId: 'no_terms',
         })
         .expect(httpStatus.BAD_REQUEST);
       expect(res.body).toHaveProperty('status');
@@ -111,7 +111,7 @@ describe('/mythril/v1/auth', () => {
           firstName: 'David',
           lastName: 'Martin',
           email: 'invalid@domain',
-          termsId: '00000000-0000-0000-0000-000000000001',
+          termsId: 'no_terms',
         })
         .expect(httpStatus.BAD_REQUEST);
       expect(res.body).toHaveProperty('status');
@@ -125,7 +125,7 @@ describe('/mythril/v1/auth', () => {
           firstName: 'David',
           lastName: 'Martin',
           email,
-          termsId: '10000000-0000-0000-0000-000000000001',
+          termsId: 'invalid_terms',
         })
         .expect(httpStatus.BAD_REQUEST);
       expect(res.body).toHaveProperty('status');
@@ -139,7 +139,7 @@ describe('/mythril/v1/auth', () => {
           firstName: 'David',
           lastName: 'Martin',
           email,
-          termsId: '00000000-0000-0000-0000-000000000001',
+          termsId: 'no_terms',
         })
         .expect(httpStatus.OK);
       expect(res.body).toHaveProperty('token');
