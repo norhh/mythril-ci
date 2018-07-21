@@ -23,6 +23,7 @@ RUN \
     python3-dev \
     python3-pip \
     software-properties-common \
+    unzip \
     wget \
     zlib1g-dev; \
   # Ethereum repo.
@@ -74,6 +75,13 @@ RUN pyenv global \
 
 # Install Truffle.
 RUN npm install -g truffle
+
+#Install SonarQube Scanner
+RUN \
+  curl -L -o sonar-scanner-cli-3.2.0.1227-linux.zip \
+    https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip; \
+  unzip -q sonar-scanner-cli-3.2.0.1227-linux.zip
+ENV PATH $PATH:/sonar-scanner-3.2.0.1227-linux/bin
 
 # Install Python dependencies of Mythril.
 RUN \
