@@ -1,5 +1,11 @@
 import httpStatus from 'http-status';
-import {serverRequest, generateEmailAddress, getValidUser, setUserProperty, getUserFromDatabase} from '../utils';
+import {
+  serverRequest,
+  generateEmailAddress,
+  getValidUser,
+  setUserProperty,
+  getUserFromDatabase,
+} from '../utils';
 
 describe('/mythril/v1/auth', () => {
   describe('check email', () => {

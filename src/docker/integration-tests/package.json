@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest -i"
+    "test": "jest -i --config config/jest/default.js"
   },
   "repository": {
     "type": "git",
@@ -32,9 +32,8 @@
     "supertest": "^3.1.0",
     "mongodb": "^3.1.1"
   },
-  "jest": {
-    "setupFiles": [
-      "<rootDir>/setup.js"
-    ]
+  "dependencies": {
+    "config": "^1.31.0",
+    "uuid": "^3.3.2"
   }
 }

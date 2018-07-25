@@ -1,9 +1,10 @@
+import config from 'config';
 import httpStatus from 'http-status';
 import {MongoClient} from 'mongodb';
 import request from 'supertest';
+import uuidV4 from 'uuid/v4';
 
 const serverRequest = request(`http://127.0.0.1:${process.env.PORT}`);
-const MONGODB_URL = process.env.MONGODB_URL;
 
 /**
  * For the given uuid, waits until the current status is no longer the passed currentStatus argument, and expects
@@ -39,9 +40,7 @@ async function waitForStatusUpdate(uuid, currentStatus, nextStatus, token, expec
  * @returns {string} random email address
  */
 function generateEmailAddress() {
-  // eslint-disable-next-line
-  const randomPrefix = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-  return `${randomPrefix}@test.com`;
+  return `${uuidV4()}@test.com`;
 }
 
 /**
@@ -50,7 +49,11 @@ function generateEmailAddress() {
  * @returns {string} random email address
  */
 async function getUserFromDatabase(email) {
-  const client = await MongoClient.connect(MONGODB_URL, {useNewUrlParser: true});
+  const client = await MongoClient.connect(
+    config.MONGODB_URL, {
+      useNewUrlParser: true,
+    },
+  );
   let user;
   try {
     const userCollection = await client.db().collection('users');
@@ -97,7 +100,11 @@ async function getValidUser() {
  * @returns {object} user user object
  */
 async function setUserProperty(email, values) {
-  const client = await MongoClient.connect(MONGODB_URL, {useNewUrlParser: true});
+  const client = await MongoClient.connect(
+    config.MONGODB_URL, {
+      useNewUrlParser: true,
+    },
+  );
   let user;
   try {
     const userCollection = await client.db().collection('users');
