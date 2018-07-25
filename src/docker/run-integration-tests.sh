@@ -6,7 +6,7 @@ cd /home && ./install-mythril-tools.sh mythril mythril-api
 service rabbitmq-server start
 mkdir -p /home/mongodb && mongod --dbpath=/home/mongodb > /dev/null &
 export PORT=3100
-export MONGODB_URL=mongodb://127.0.0.1:27017/mythrill
+export MONGODB_URL=mongodb://127.0.0.1:27017/mythril
 cd /home/mythril-api
 sleep 5
 npm start &
