@@ -59,7 +59,7 @@ async function getUserFromDatabase(email) {
     const userCollection = await client.db().collection('users');
     user = await userCollection.findOne({email_lowered: email.toLowerCase()});
   } finally {
-    await client.close();
+    await client.logout();
   }
   return user;
 }
@@ -110,7 +110,7 @@ async function setUserProperty(email, values) {
     const userCollection = await client.db().collection('users');
     user = await userCollection.findOneAndUpdate({email_lowered: email.toLowerCase()}, {$set: values});
   } finally {
-    await client.close();
+    await client.logout();
   }
   return user;
 }

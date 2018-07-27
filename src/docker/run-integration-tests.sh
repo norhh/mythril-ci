@@ -16,4 +16,3 @@ sleep 5
 cd /home/integration-tests && npm test
 
 # killall node
-DB
