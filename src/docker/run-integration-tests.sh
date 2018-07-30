@@ -9,7 +9,7 @@ export PORT=3100
 export MONGODB_URL=mongodb://127.0.0.1:27017/mythril
 cd /home/mythril-api
 sleep 5
-npm start &
+npm run start-for-tests &
 npm run worker &
 # make sure to leave some time to make sure everything needed properly boots
 sleep 5

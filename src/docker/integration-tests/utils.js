@@ -75,6 +75,7 @@ async function getValidCredential() {
     .post('/mythril/v1/auth/user')
     .send({
       firstName: 'David',
+      gReCaptcha: 'DUMMY_TOKEN',
       lastName: 'Martin',
       email,
       termsId: 'no_terms',
