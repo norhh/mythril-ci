@@ -1,7 +1,7 @@
+import _ from 'lodash';
 import httpStatus from 'http-status';
 import {serverRequest, makeUserUnlimited, waitForStatusUpdate, getValidCredential} from '../utils';
 import submissionWithIssues from './submissionWithIssues';
-
 
 describe('/mythril/v1/analysis', () => {
   describe('Submit', () => {
@@ -130,7 +130,9 @@ describe('/mythril/v1/analysis', () => {
         .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK);
 
-      expect(res.body).toMatchSnapshot();
+      const issues = res.body.map((issue) => _.omit(issue, 'debug'));
+
+      expect(issues).toMatchSnapshot();
     });
   });
 });
