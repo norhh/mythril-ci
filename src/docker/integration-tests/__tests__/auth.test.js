@@ -129,7 +129,7 @@ describe('/mythril/v1/auth', () => {
       expect(res.body).toHaveProperty('status');
       expect(res.body.status).toBe(httpStatus.BAD_REQUEST);
     });
-    it('success', async () => {
+    it.skip('success', async () => {
       const user = await getValidUser();
       const {verificationCode, email, apiKey} = user;
       const res = await serverRequest
