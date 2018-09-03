@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/mythril/v1/analysis Submit issues 1`] = `
+exports[`/v1/analyses Submit issues 1`] = `
 Array [
   Object {
     "address": 499,

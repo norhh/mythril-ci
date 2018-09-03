@@ -7,11 +7,11 @@ import {
   getUserFromDatabase,
 } from '../utils';
 
-describe('/mythril/v1/auth', () => {
+describe('/v1/auth', () => {
   describe('check email', () => {
     it('invalid email', async () => {
       const res = await serverRequest
-        .get('/mythril/v1/auth/user/check?email=invalid')
+        .get('/v1/auth/user/check?email=invalid')
         .expect(httpStatus.BAD_REQUEST);
       expect(res.body).toHaveProperty('status');
       expect(res.body.status).toBe(httpStatus.BAD_REQUEST);
@@ -19,7 +19,7 @@ describe('/mythril/v1/auth', () => {
 
     it('another invalid email', async () => {
       const res = await serverRequest
-        .get('/mythril/v1/auth/user/check?email=invalid@domain')
+        .get('/v1/auth/user/check?email=invalid@domain')
         .expect(httpStatus.BAD_REQUEST);
       expect(res.body).toHaveProperty('status');
       expect(res.body.status).toBe(httpStatus.BAD_REQUEST);
@@ -28,7 +28,7 @@ describe('/mythril/v1/auth', () => {
     it('email does not exist', async () => {
       const email = generateEmailAddress();
       const res = await serverRequest
-        .get(`/mythril/v1/auth/user/check?email=${email}`)
+        .get(`/v1/auth/user/check?email=${email}`)
         .expect(httpStatus.OK);
       expect(res.body).toHaveProperty('exists');
       expect(res.body.exists).toBe(false);
@@ -38,7 +38,7 @@ describe('/mythril/v1/auth', () => {
   describe('register', () => {
     it('invalid email', async () => {
       const res = await serverRequest
-        .post('/mythril/v1/auth/user')
+        .post('/v1/auth/user')
         .send({
           firstName: 'David',
           lastName: 'Martin',
@@ -51,7 +51,7 @@ describe('/mythril/v1/auth', () => {
     });
     it('another invalid email', async () => {
       const res = await serverRequest
-        .post('/mythril/v1/auth/user')
+        .post('/v1/auth/user')
         .send({
           firstName: 'David',
           lastName: 'Martin',
@@ -65,7 +65,7 @@ describe('/mythril/v1/auth', () => {
     it('invalid terms', async () => {
       const email = generateEmailAddress();
       const res = await serverRequest
-        .post('/mythril/v1/auth/user')
+        .post('/v1/auth/user')
         .send({
           firstName: 'David',
           lastName: 'Martin',
@@ -79,7 +79,7 @@ describe('/mythril/v1/auth', () => {
     it('success and email exists', async () => {
       const email = generateEmailAddress();
       const res = await serverRequest
-        .post('/mythril/v1/auth/user')
+        .post('/v1/auth/user')
         .send({
           firstName: 'David',
           gReCaptcha: 'DummyReCaptcha',
@@ -91,7 +91,7 @@ describe('/mythril/v1/auth', () => {
       expect(res.body).toHaveProperty('user');
 
       const checkRes = await serverRequest
-        .get(`/mythril/v1/auth/user/check?email=${email}`)
+        .get(`/v1/auth/user/check?email=${email}`)
         .expect(httpStatus.OK);
       expect(checkRes.body).toHaveProperty('exists');
       expect(checkRes.body.exists).toBe(true);
@@ -102,7 +102,7 @@ describe('/mythril/v1/auth', () => {
       const email = generateEmailAddress();
       const verificationCode = 'abc';
       const res = await serverRequest
-        .get(`/mythril/v1/auth/user/verify/${email}/${verificationCode}`)
+        .get(`/v1/auth/user/verify/${email}/${verificationCode}`)
         .expect(httpStatus.NOT_FOUND);
       expect(res.body).toHaveProperty('status');
       expect(res.body.status).toBe(httpStatus.NOT_FOUND);
@@ -111,10 +111,10 @@ describe('/mythril/v1/auth', () => {
       const user = await getValidUser();
       const {verificationCode, email} = user;
       await serverRequest
-        .get(`/mythril/v1/auth/user/verify/${email}/${verificationCode}`)
+        .get(`/v1/auth/user/verify/${email}/${verificationCode}`)
         .expect(httpStatus.OK);
       const res = await serverRequest
-        .get(`/mythril/v1/auth/user/verify/${email}/${verificationCode}`)
+        .get(`/v1/auth/user/verify/${email}/${verificationCode}`)
         .expect(httpStatus.NOT_FOUND);
       expect(res.body).toHaveProperty('status');
       expect(res.body.status).toBe(httpStatus.NOT_FOUND);
@@ -124,7 +124,7 @@ describe('/mythril/v1/auth', () => {
       const {verificationCode, email} = user;
       await setUserProperty(email, {verificationExpiry: 0});
       const res = await serverRequest
-        .get(`/mythril/v1/auth/user/verify/${email}/${verificationCode}`)
+        .get(`/v1/auth/user/verify/${email}/${verificationCode}`)
         .expect(httpStatus.BAD_REQUEST);
       expect(res.body).toHaveProperty('status');
       expect(res.body.status).toBe(httpStatus.BAD_REQUEST);
@@ -133,7 +133,7 @@ describe('/mythril/v1/auth', () => {
       const user = await getValidUser();
       const {verificationCode, email, apiKey} = user;
       const res = await serverRequest
-        .get(`/mythril/v1/auth/user/verify/${email}/${verificationCode}`)
+        .get(`/v1/auth/user/verify/${email}/${verificationCode}`)
         .expect(httpStatus.OK);
       expect(res.body).toHaveProperty('apiKey');
       expect(res.body.apiKey).toBe(apiKey);
@@ -144,7 +144,7 @@ describe('/mythril/v1/auth', () => {
     it('email does not exist', async () => {
       const email = generateEmailAddress();
       const res = await serverRequest
-        .post('/mythril/v1/auth/user/resend')
+        .post('/v1/auth/user/resend')
         .send({
           email,
         })
@@ -159,10 +159,10 @@ describe('/mythril/v1/auth', () => {
       const user = await getValidUser();
       const {verificationCode, email} = user;
       await serverRequest
-        .get(`/mythril/v1/auth/user/verify/${email}/${verificationCode}`)
+        .get(`/v1/auth/user/verify/${email}/${verificationCode}`)
         .expect(httpStatus.OK);
       const res = await serverRequest
-        .post('/mythril/v1/auth/user/resend')
+        .post('/v1/auth/user/resend')
         .send({
           email,
         })
@@ -174,7 +174,7 @@ describe('/mythril/v1/auth', () => {
       const user = await getValidUser();
       const {verificationCode, verificationExpiry, email} = user;
       const res = await serverRequest
-        .post('/mythril/v1/auth/user/resend')
+        .post('/v1/auth/user/resend')
         .send({
           email,
         })
@@ -190,7 +190,7 @@ describe('/mythril/v1/auth', () => {
     it('email does not exist', async () => {
       const email = generateEmailAddress();
       const res = await serverRequest
-        .post('/mythril/v1/auth/user/lost')
+        .post('/v1/auth/user/lost')
         .send({
           email,
         })
@@ -202,7 +202,7 @@ describe('/mythril/v1/auth', () => {
       const user = await getValidUser();
       const {email} = user;
       const res = await serverRequest
-        .post('/mythril/v1/auth/user/lost')
+        .post('/v1/auth/user/lost')
         .send({
           email,
         })
@@ -214,10 +214,10 @@ describe('/mythril/v1/auth', () => {
       const user = await getValidUser();
       const {verificationCode, email} = user;
       await serverRequest
-        .get(`/mythril/v1/auth/user/verify/${email}/${verificationCode}`)
+        .get(`/v1/auth/user/verify/${email}/${verificationCode}`)
         .expect(httpStatus.OK);
       const res = await serverRequest
-        .post('/mythril/v1/auth/user/lost')
+        .post('/v1/auth/user/lost')
         .send({
           email,
         })

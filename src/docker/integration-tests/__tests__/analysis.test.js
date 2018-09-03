@@ -3,11 +3,11 @@ import httpStatus from 'http-status';
 import {serverRequest, makeUserUnlimited, waitForStatusUpdate, getValidCredential} from '../utils';
 import submissionWithIssues from './submissionWithIssues';
 
-describe('/mythril/v1/analysis', () => {
+describe('/v1/analyses', () => {
   describe('Submit', () => {
     it('post analysis without authorization', async () => {
       const res = await serverRequest
-        .post('/mythril/v1/analysis')
+        .post('/v1/analyses')
         .send({
           type: 'bytecode',
           contract: 'abcc',
@@ -19,7 +19,7 @@ describe('/mythril/v1/analysis', () => {
 
     it('get analysis status without authorization', async () => {
       const res = await serverRequest
-        .get('/mythril/v1/analysis/notexist')
+        .get('/v1/analyses/notexist')
         .expect(httpStatus.UNAUTHORIZED);
 
       expect(res.body.status).toBe(httpStatus.UNAUTHORIZED);
@@ -27,7 +27,7 @@ describe('/mythril/v1/analysis', () => {
 
     it('get analysis issues without authorization', async () => {
       const res = await serverRequest
-        .get('/mythril/v1/analysis/notexist/issues')
+        .get('/v1/analyses/notexist/issues')
         .expect(httpStatus.UNAUTHORIZED);
 
       expect(res.body.status).toBe(httpStatus.UNAUTHORIZED);
@@ -38,7 +38,7 @@ describe('/mythril/v1/analysis', () => {
       await makeUserUnlimited(email);
 
       let res = await serverRequest
-        .post('/mythril/v1/analysis')
+        .post('/v1/analyses')
         .set('Authorization', `Bearer ${token}`)
         .send({
           type: 'bytecode',
@@ -46,14 +46,15 @@ describe('/mythril/v1/analysis', () => {
         })
         .expect(httpStatus.OK);
 
-      expect(res.body.result).toBe('Queued');
       expect(res.body).toHaveProperty('uuid');
 
-      await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
-      await waitForStatusUpdate(res.body.uuid, 'In progress', 'Finished', token, expect);
+      if (res.body.status === 'Queued') {
+        await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
+        await waitForStatusUpdate(res.body.uuid, 'In progress', 'Finished', token, expect);
+      }
 
       res = await serverRequest
-        .get(`/mythril/v1/analysis/${res.body.uuid}/issues`)
+        .get(`/v1/analyses/${res.body.uuid}/issues`)
         .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK);
 
@@ -67,18 +68,19 @@ describe('/mythril/v1/analysis', () => {
       await makeUserUnlimited(email);
 
       const res = await serverRequest
-        .post('/mythril/v1/analysis')
+        .post('/v1/analyses')
         .set('Authorization', `Bearer ${token}`)
         .send({
           type: 'bytecode',
           contract: '01',
         })
         .expect(httpStatus.OK);
-      expect(res.body.result).toBe('Queued');
       expect(res.body).toHaveProperty('uuid');
 
-      await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
-      await waitForStatusUpdate(res.body.uuid, 'In progress', 'Error', token, expect);
+      if (res.body.status === 'Queued') {
+        await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
+        await waitForStatusUpdate(res.body.uuid, 'In progress', 'Error', token, expect);
+      }
     });
 
     it('Submit multiple (no issues)', async () => {
@@ -86,21 +88,22 @@ describe('/mythril/v1/analysis', () => {
       await makeUserUnlimited(email);
 
       let res = await serverRequest
-        .post('/mythril/v1/analysis')
+        .post('/v1/analyses')
         .set('Authorization', `Bearer ${token}`)
         .send({
           type: 'bytecode',
           contracts: ['abcc', '00', '11'],
         })
         .expect(httpStatus.OK);
-      expect(res.body.result).toBe('Queued');
       expect(res.body).toHaveProperty('uuid');
 
-      await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
-      await waitForStatusUpdate(res.body.uuid, 'In progress', 'Finished', token, expect);
+      if (res.body.status === 'Queued') {
+        await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
+        await waitForStatusUpdate(res.body.uuid, 'In progress', 'Finished', token, expect);
+      }
 
       res = await serverRequest
-        .get(`/mythril/v1/analysis/${res.body.uuid}/issues`)
+        .get(`/v1/analyses/${res.body.uuid}/issues`)
         .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK);
 
@@ -114,19 +117,20 @@ describe('/mythril/v1/analysis', () => {
       await makeUserUnlimited(email);
 
       let res = await serverRequest
-        .post('/mythril/v1/analysis')
+        .post('/v1/analyses')
         .set('Authorization', `Bearer ${token}`)
         .send(submissionWithIssues)
         .expect(httpStatus.OK);
 
-      expect(res.body.result).toBe('Queued');
       expect(res.body).toHaveProperty('uuid');
 
-      await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
-      await waitForStatusUpdate(res.body.uuid, 'In progress', 'Finished', token, expect);
+      if (res.body.status === 'Queued') {
+        await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
+        await waitForStatusUpdate(res.body.uuid, 'In progress', 'Finished', token, expect);
+      }
 
       res = await serverRequest
-        .get(`/mythril/v1/analysis/${res.body.uuid}/issues`)
+        .get(`/v1/analyses/${res.body.uuid}/issues`)
         .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK);
 

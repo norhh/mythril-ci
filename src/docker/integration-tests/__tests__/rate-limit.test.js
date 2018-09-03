@@ -1,11 +1,17 @@
 import httpStatus from 'http-status';
-import {serverRequest, getUserFromDatabase, setUserProperty, makeUserUnlimited, getValidCredential} from '../utils';
+import {
+  serverRequest,
+  getUserFromDatabase,
+  setUserProperty,
+  makeUserUnlimited,
+  getValidCredential,
+} from '../utils';
 
 describe('Rate limit', () => {
   it('5 min limit', async () => {
     const {email, token} = await getValidCredential();
     await serverRequest
-      .get('/mythril/v1/analysis/notexist')
+      .get('/v1/analyses/notexist')
       .set('Authorization', `Bearer ${token}`)
       .expect(httpStatus.BAD_REQUEST);
     const user = await getUserFromDatabase(email);
@@ -15,7 +21,7 @@ describe('Rate limit', () => {
       {'limitCounters.fiveMin': 10}
     );
     await serverRequest
-      .get('/mythril/v1/analysis/notexist')
+      .get('/v1/analyses/notexist')
       .set('Authorization', `Bearer ${token}`)
       .expect(httpStatus.TOO_MANY_REQUESTS);
     const fiveMinInMilliseconds = 300000;
@@ -24,14 +30,14 @@ describe('Rate limit', () => {
       {'recordedTimeOfFirstRequests.fiveMin': user.recordedTimeOfFirstRequests.fiveMin - fiveMinInMilliseconds}
     );
     await serverRequest
-      .get('/mythril/v1/analysis/notexist')
+      .get('/v1/analyses/notexist')
       .set('Authorization', `Bearer ${token}`)
       .expect(httpStatus.BAD_REQUEST);
   });
   it('1 hour limit', async () => {
     const {email, token} = await getValidCredential();
     await serverRequest
-      .get('/mythril/v1/analysis/notexist')
+      .get('/v1/analyses/notexist')
       .set('Authorization', `Bearer ${token}`)
       .expect(httpStatus.BAD_REQUEST);
     const user = await getUserFromDatabase(email);
@@ -41,7 +47,7 @@ describe('Rate limit', () => {
       {'limitCounters.oneHour': 30}
     );
     await serverRequest
-      .get('/mythril/v1/analysis/notexist')
+      .get('/v1/analyses/notexist')
       .set('Authorization', `Bearer ${token}`)
       .expect(httpStatus.TOO_MANY_REQUESTS);
     const oneHourInMilliseconds = 3600000;
@@ -50,14 +56,14 @@ describe('Rate limit', () => {
       {'recordedTimeOfFirstRequests.oneHour': user.recordedTimeOfFirstRequests.oneHour - oneHourInMilliseconds}
     );
     await serverRequest
-      .get('/mythril/v1/analysis/notexist')
+      .get('/v1/analyses/notexist')
       .set('Authorization', `Bearer ${token}`)
       .expect(httpStatus.BAD_REQUEST);
   });
   it('1 day limit', async () => {
     const {email, token} = await getValidCredential();
     await serverRequest
-      .get('/mythril/v1/analysis/notexist')
+      .get('/v1/analyses/notexist')
       .set('Authorization', `Bearer ${token}`)
       .expect(httpStatus.BAD_REQUEST);
     const user = await getUserFromDatabase(email);
@@ -67,7 +73,7 @@ describe('Rate limit', () => {
       {'limitCounters.oneDay': 100}
     );
     await serverRequest
-      .get('/mythril/v1/analysis/notexist')
+      .get('/v1/analyses/notexist')
       .set('Authorization', `Bearer ${token}`)
       .expect(httpStatus.TOO_MANY_REQUESTS);
     const oneDayInMilliseconds = 86400000;
@@ -76,7 +82,7 @@ describe('Rate limit', () => {
       {'recordedTimeOfFirstRequests.oneDay': user.recordedTimeOfFirstRequests.oneDay - oneDayInMilliseconds}
     );
     await serverRequest
-      .get('/mythril/v1/analysis/notexist')
+      .get('/v1/analyses/notexist')
       .set('Authorization', `Bearer ${token}`)
       .expect(httpStatus.BAD_REQUEST);
   });
@@ -87,7 +93,7 @@ describe('Rate limit', () => {
     // eslint-disable-next-line
     for (let i = 0; i < numberOfRequest; i++) {
       await serverRequest
-        .get('/mythril/v1/analysis/notexist')
+        .get('/v1/analyses/notexist')
         .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.BAD_REQUEST);
     }
