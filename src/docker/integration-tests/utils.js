@@ -36,6 +36,26 @@ async function waitForStatusUpdate(uuid, currentStatus, nextStatus, token, expec
 }
 
 /**
+ * Waits until the specified analysis has necessary status.
+ * @param {String} uuid
+ * @param {String} status
+ * @param {String} token
+ */
+async function waitAnalysisStatus(uuid, status, token) {
+  const DELAY = 100;
+  for (;;) { // eslint-disable-line no-restricted-syntax
+    const res = await serverRequest
+      .get(`/v1/analyses/${uuid}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(httpStatus.OK);
+    if (res.body.status === status) {
+      return;
+    }
+    await Promise.delay(DELAY);
+  }
+}
+
+/**
  * Generate random email address
  * @returns {string} random email address
  */
@@ -134,4 +154,5 @@ export {
   getValidUser,
   makeUserUnlimited,
   setUserProperty,
+  waitAnalysisStatus,
 };
