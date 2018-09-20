@@ -25,6 +25,7 @@ The addition or multiplication may result in a value higher than the maximum rep
     "description": "Multiple sends exist in one transaction, try to isolate each external call into its own transaction. As external calls can fail accidentally or deliberately.
 Consecutive calls: 
 Call at address: 823
+Call at address: 823
 ",
     "function": "_function_0x2e1a7d4d",
     "title": "Multiple Calls",
@@ -39,19 +40,19 @@ Call at address: 823
     "type": "Warning",
   },
   Object {
-    "address": 823,
+    "address": 728,
     "contract": "MAIN",
-    "description": "This contract executes a message call to to another contract. Make sure that the called contract is trusted and does not execute user-supplied code.",
+    "description": "The return value of an external call is not checked. Note that execution continue even if the called contract throws.",
     "function": "_function_0x2e1a7d4d",
-    "title": "Message call to external contract",
+    "title": "Unchecked CALL return value",
     "type": "Informational",
   },
   Object {
     "address": 823,
     "contract": "MAIN",
-    "description": "The return value of an external call is not checked. Note that execution continue even if the called contract throws.",
+    "description": "This contract executes a message call to to another contract. Make sure that the called contract is trusted and does not execute user-supplied code.",
     "function": "_function_0x2e1a7d4d",
-    "title": "Unchecked CALL return value",
+    "title": "Message call to external contract",
     "type": "Informational",
   },
   Object {
