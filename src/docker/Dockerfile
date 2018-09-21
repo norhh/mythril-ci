@@ -132,6 +132,5 @@ RUN \
   else  \
     # Create new Ethereum account, and sync blockchain for 10 minutes
     geth account new --password ./ethereum.password; \
-    timeout --preserve-status 30s geth --syncmode full; \
+    timeout --preserve-status 10m geth --syncmode full; \
   fi
-  
