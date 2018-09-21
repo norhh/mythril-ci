@@ -124,8 +124,14 @@ RUN cd integration-tests && npm install && cd ..
 # Helper command to run integration tests from within this generated image
 COPY run-integration-tests.sh ./
 
-# Create new Ethereum account.
-RUN geth account new --password ./ethereum.password
-
 # Run geth in background for ten minutes.
-RUN timeout --preserve-status 10m geth --syncmode full
+RUN \
+  if [ -e ./.cache/.ethereum ]; \
+  then \
+    mv ./.cache/.ethereum /root; \
+  else  \
+    # Create new Ethereum account, and sync blockchain for 10 minutes
+    geth account new --password ./ethereum.password; \
+    timeout --preserve-status 30s geth --syncmode full; \
+  fi
+  

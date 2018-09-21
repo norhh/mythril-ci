@@ -6,7 +6,13 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - restore_cache:
+          key: blockchain
       - run: ./dev_test_environment_release.sh
+      - save_cache:
+          key: blockchain
+          paths:
+            - ./src/docker/.cache
 
 workflows:
   version: 2
