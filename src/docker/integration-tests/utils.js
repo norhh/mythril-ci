@@ -7,35 +7,6 @@ import uuidV4 from 'uuid/v4';
 const serverRequest = request(`http://127.0.0.1:${process.env.PORT}`);
 
 /**
- * For the given uuid, waits until the current status is no longer the passed currentStatus argument, and expects
- * the new status is the passed nextStatus argument.
- * @param {string} uuid
- * @param {string} currentStatus
- * @param {string} nextStatus
- * @param {string} token
- * @param {function} expect
- */
-async function waitForStatusUpdate(uuid, currentStatus, nextStatus, token, expect) {
-  let res;
-
-  // eslint-disable-next-line no-constant-condition, no-restricted-syntax
-  while (true) {
-    const delayMS = 50;
-    await Promise.delay(delayMS);
-
-    res = await serverRequest
-      .get(`/v1/analyses/${uuid}`)
-      .set('Authorization', `Bearer ${token}`)
-      .expect(httpStatus.OK);
-    const result = res.body.status;
-    if (result !== currentStatus) {
-      expect(result).toBe(nextStatus);
-      break;
-    }
-  }
-}
-
-/**
  * Waits until the specified analysis has necessary status.
  * @param {String} uuid
  * @param {String} status
@@ -147,7 +118,6 @@ async function makeUserUnlimited(email) {
 
 export {
   serverRequest,
-  waitForStatusUpdate,
   generateEmailAddress,
   getValidCredential,
   getUserFromDatabase,

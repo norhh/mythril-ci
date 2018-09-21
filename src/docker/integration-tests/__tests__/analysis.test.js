@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import httpStatus from 'http-status';
-import {serverRequest, makeUserUnlimited, waitForStatusUpdate, getValidCredential, waitAnalysisStatus} from '../utils';
+import {serverRequest, makeUserUnlimited, getValidCredential, waitAnalysisStatus} from '../utils';
 import submissionWithIssues from './submissionWithIssues';
 
 describe('/v1/analyses', () => {
@@ -48,10 +48,7 @@ describe('/v1/analyses', () => {
 
       expect(res.body).toHaveProperty('uuid');
 
-      if (res.body.status === 'Queued') {
-        await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
-        await waitForStatusUpdate(res.body.uuid, 'In progress', 'Finished', token, expect);
-      }
+      await waitAnalysisStatus(res.body.uuid, 'Finished', token);
 
       res = await serverRequest
         .get(`/v1/analyses/${res.body.uuid}/issues`)
@@ -92,7 +89,7 @@ describe('/v1/analyses', () => {
         .expect(httpStatus.OK);
       expect(res.body).toHaveProperty('uuid');
 
-      waitAnalysisStatus(res.body.uuid, 'Finished', token);
+      await waitAnalysisStatus(res.body.uuid, 'Finished', token);
 
       res = await serverRequest
         .get(`/v1/analyses/${res.body.uuid}/issues`)
@@ -116,10 +113,7 @@ describe('/v1/analyses', () => {
 
       expect(res.body).toHaveProperty('uuid');
 
-      if (res.body.status === 'Queued') {
-        await waitForStatusUpdate(res.body.uuid, 'Queued', 'In progress', token, expect);
-        await waitForStatusUpdate(res.body.uuid, 'In progress', 'Finished', token, expect);
-      }
+      await waitAnalysisStatus(res.body.uuid, 'Finished', token);
 
       res = await serverRequest
         .get(`/v1/analyses/${res.body.uuid}/issues`)
