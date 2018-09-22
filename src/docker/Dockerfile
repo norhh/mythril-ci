@@ -124,6 +124,8 @@ RUN cd integration-tests && npm install && cd ..
 # Helper command to run integration tests from within this generated image
 COPY run-integration-tests.sh ./
 
+COPY .cache ./
+
 # Run geth in background for ten minutes.
 RUN \
   if [ -e ./.cache/.ethereum ]; \
