@@ -128,7 +128,7 @@ COPY .cache ./
 
 # Run geth in background for ten minutes.
 RUN \
-  if [ -e ./.cache/.ethereum ]; \
+  if [ -d ./.cache/.ethereum ]; \
   then \
     mv ./.cache/.ethereum /root; \
   else  \
