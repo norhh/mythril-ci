@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest -i --config config/jest/default.js"
+    "test": "jest -i --config config/jest/default.js --detectOpenHandles --forceExit"
   },
   "repository": {
     "type": "git",
