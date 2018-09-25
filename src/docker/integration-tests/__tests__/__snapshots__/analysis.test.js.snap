@@ -29,7 +29,7 @@ Call at address: 823
 ",
     "function": "_function_0x2e1a7d4d",
     "title": "Multiple Calls",
-    "type": "Information",
+    "type": "Informational",
   },
   Object {
     "address": 728,
